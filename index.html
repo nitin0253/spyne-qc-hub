@@ -29,8 +29,8 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
 
 /* ── HEADER ── */
 .hdr{
-  display:flex;align-items:center;gap:16px;
-  padding:0 24px;height:56px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 24px;height:48px;
   background:var(--surface);border-bottom:1px solid var(--rim);
   position:relative;z-index:10;flex-shrink:0;
 }
@@ -46,7 +46,7 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
 .brand-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;margin-top:1px;}
 
 /* ── TAB SWITCHER ── */
-.tabs{display:flex;align-items:center;gap:4px;margin-left:auto;}
+.tabs{display:flex;align-items:center;gap:6px;}
 .tab{
   display:inline-flex;align-items:center;gap:8px;
   padding:7px 18px;border-radius:8px;
@@ -58,9 +58,10 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
 .tab:hover{color:var(--t1);background:var(--ag2);}
 .tab.active{
   color:var(--accent);background:var(--ag);
-  border-color:rgba(107,158,255,.25);
+  border-color:rgba(107,158,255,.3);
+  box-shadow:0 0 0 1px rgba(107,158,255,.15);
 }
-[data-theme="light"] .tab.active{border-color:rgba(58,92,240,.2);}
+[data-theme="light"] .tab.active{border-color:rgba(58,92,240,.2);box-shadow:0 0 0 1px rgba(58,92,240,.1);}
 .tab-icon{font-size:16px;line-height:1;}
 .tab-badge{
   display:inline-flex;align-items:center;justify-content:center;
@@ -121,14 +122,6 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
 
   <!-- Header -->
   <header class="hdr">
-    <div class="brand">
-      <div class="brand-logo">SPYNE</div>
-      <div>
-        <div class="brand-label">QC Dashboard</div>
-        <div class="brand-sub">OPS HUB</div>
-      </div>
-    </div>
-
     <!-- Product tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="images" onclick="switchTab('images')">
@@ -148,8 +141,6 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
       </button>
     </div>
 
-    <!-- Theme toggle -->
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
   </header>
 
   <!-- Frames -->
@@ -168,7 +159,7 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
     <iframe
       class="frame"
       id="frame-videos"
-      src=""
+      src="about:blank"
       data-src="https://video-tracker-delivery.vercel.app/"
       title="Videos QC Dashboard"
       allow="clipboard-write"
@@ -188,20 +179,6 @@ button{font-family:var(--f);cursor:pointer;border:none;background:none}
 </div>
 
 <script>
-// ── THEME ────────────────────────────────────────────────────────
-const saved = localStorage.getItem('hub-theme') || 'dark';
-applyTheme(saved);
-
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('themeBtn').textContent = t === 'dark' ? '🌙' : '☀️';
-  try { localStorage.setItem('hub-theme', t); } catch(e) {}
-}
-function toggleTheme() {
-  const cur = document.documentElement.getAttribute('data-theme');
-  applyTheme(cur === 'dark' ? 'light' : 'dark');
-}
-
 // ── TAB SWITCHING ────────────────────────────────────────────────
 // Lazy-load iframes: only set src when first activated, so unused
 // dashboards don't consume bandwidth on load.
