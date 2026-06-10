@@ -1,213 +1,174 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Spyne Ops · QC Dashboard Hub</title>
+<title>Spyne · QC Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--f:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;}
-[data-theme="dark"]{
-  --bg:#111113;--surface:#1c1c1f;--rim:#2a2a2f;--rim2:#34343a;
-  --t1:#f0efe9;--t2:#b0b0b8;--t3:#76767e;
-  --accent:#6b9eff;--ag:rgba(107,158,255,.12);--ag2:rgba(107,158,255,.06);
-  --green:#4ade80;--amber:#f5c265;--red:#f87171;--purple:#c084fc;
-  --sh:0 2px 8px rgba(0,0,0,.4);--sh2:0 8px 32px rgba(0,0,0,.6);
-}
-[data-theme="light"]{
-  --bg:#f4f5fa;--surface:#ffffff;--rim:#dde1f0;--rim2:#c8ceea;
-  --t1:#090c1a;--t2:#3d4568;--t3:#9097be;
-  --accent:#3a5cf0;--ag:rgba(58,92,240,.1);--ag2:rgba(58,92,240,.05);
-  --green:#1f7a52;--amber:#b27a00;--red:#b3261e;--purple:#7c3aed;
-  --sh:0 1px 4px rgba(0,0,0,.08);--sh2:0 8px 24px rgba(0,0,0,.1);
-}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--f);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;}
-button{font-family:var(--f);cursor:pointer;border:none;background:none}
+html,body{height:100%;font-family:'Inter',sans-serif;background:#111113;color:#f0efe9;-webkit-font-smoothing:antialiased;}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none;}
+
+/* ── SHELL ── */
+.shell{display:flex;flex-direction:column;height:100vh;}
 
 /* ── HEADER ── */
 .hdr{
   display:flex;align-items:center;justify-content:center;
-  padding:0 24px;height:48px;
-  background:var(--surface);border-bottom:1px solid var(--rim);
-  position:relative;z-index:10;flex-shrink:0;
+  height:52px;flex-shrink:0;
+  background:#1c1c1f;
+  border-bottom:1px solid #2a2a2f;
+  position:relative;z-index:10;
 }
-.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.brand-logo{
-  height:30px;width:auto;
-  background:#5c7cfa;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  padding:0 10px;
-  font-size:13px;font-weight:800;color:#fff;letter-spacing:.5px;
-}
-.brand-label{font-size:14px;font-weight:700;letter-spacing:-.3px;}
-.brand-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;margin-top:1px;}
 
-/* ── TAB SWITCHER ── */
-.tabs{display:flex;align-items:center;gap:6px;}
+/* ── TABS ── */
+.tabs{display:flex;align-items:center;gap:4px;}
+
 .tab{
   display:inline-flex;align-items:center;gap:8px;
-  padding:7px 18px;border-radius:8px;
+  padding:8px 22px;border-radius:8px;
   font-size:13px;font-weight:600;letter-spacing:-.01em;
-  color:var(--t2);transition:all .18s;
+  color:#76767e;
   border:1px solid transparent;
+  transition:color .15s,background .15s,border-color .15s;
+  text-decoration:none;
   position:relative;
 }
-.tab:hover{color:var(--t1);background:var(--ag2);}
+.tab:hover{color:#f0efe9;background:rgba(107,158,255,.06);}
 .tab.active{
-  color:var(--accent);background:var(--ag);
+  color:#6b9eff;
+  background:rgba(107,158,255,.12);
   border-color:rgba(107,158,255,.3);
-  box-shadow:0 0 0 1px rgba(107,158,255,.15);
 }
-[data-theme="light"] .tab.active{border-color:rgba(58,92,240,.2);box-shadow:0 0 0 1px rgba(58,92,240,.1);}
-.tab-icon{font-size:16px;line-height:1;}
-.tab-badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  background:var(--amber);color:#000;
-  font-family:var(--mono);font-size:8px;font-weight:700;
-  padding:1px 6px;border-radius:99px;letter-spacing:.3px;
-  opacity:.85;
-}
+.tab-icon{font-size:15px;line-height:1;}
 .tab-dot{
   width:6px;height:6px;border-radius:50%;
-  background:var(--green);box-shadow:0 0 6px var(--green);
-  animation:pulse 2s ease infinite;flex-shrink:0;
+  background:#4ade80;box-shadow:0 0 6px #4ade80;
+  animation:pulse 2s ease infinite;
 }
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
-
-/* ── THEME TOGGLE ── */
-.theme-btn{
-  width:34px;height:34px;border-radius:8px;
-  border:1px solid var(--rim);background:var(--surface);
-  color:var(--t2);display:grid;place-items:center;
-  font-size:15px;transition:all .15s;margin-left:8px;
+.tab-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;font-weight:700;letter-spacing:.4px;
+  background:rgba(245,194,101,.15);
+  border:1px solid rgba(245,194,101,.3);
+  color:#f5c265;padding:2px 7px;border-radius:99px;
 }
-.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--ag2);}
 
-/* ── IFRAME WRAPPER ── */
-.frames{flex:1;position:relative;overflow:hidden;}
-.frame{
+/* ── IFRAME ── */
+.frame-wrap{flex:1;position:relative;overflow:hidden;}
+iframe{
   position:absolute;inset:0;
-  border:none;width:100%;height:100%;
-  display:none;
-  background:var(--bg);
+  width:100%;height:100%;
+  border:none;display:block;
+  background:#111113;
 }
-.frame.active{display:block;}
 
-/* ── COMING SOON PLACEHOLDER ── */
-.coming-soon{
+/* ── COMING SOON ── */
+.soon{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;background:var(--bg);
+  gap:14px;background:#111113;
 }
-.cs-icon{font-size:56px;line-height:1;}
-.cs-title{font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--t1);}
-.cs-sub{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.5px;}
-.cs-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 16px;border-radius:99px;
-  background:rgba(245,194,101,.1);border:1px solid rgba(245,194,101,.3);
-  font-family:var(--mono);font-size:11px;color:var(--amber);
-  margin-top:4px;letter-spacing:.5px;
+.soon-icon{font-size:52px;}
+.soon-title{font-size:20px;font-weight:700;letter-spacing:-.3px;}
+.soon-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:#76767e;letter-spacing:.5px;}
+.soon-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 16px;border-radius:99px;margin-top:4px;
+  background:rgba(245,194,101,.08);border:1px solid rgba(245,194,101,.25);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#f5c265;letter-spacing:.4px;
 }
-
-/* ── LAYOUT ── */
-.shell{display:flex;flex-direction:column;height:100vh;}
 </style>
 </head>
 <body>
 <div class="shell">
 
-  <!-- Header -->
   <header class="hdr">
-    <!-- Product tabs -->
-    <div class="tabs">
-      <button class="tab active" data-tab="images" onclick="switchTab('images')">
-        <span class="tab-icon">🖼️</span>
-        Images
-        <span class="tab-dot"></span>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-id="images" onclick="activate('images')">
+        <span class="tab-icon">🖼️</span> Images <span class="tab-dot"></span>
       </button>
-      <button class="tab" data-tab="videos" onclick="switchTab('videos')">
-        <span class="tab-icon">🎬</span>
-        Videos
-        <span class="tab-dot"></span>
+      <button class="tab" data-id="videos" onclick="activate('videos')">
+        <span class="tab-icon">🎬</span> Videos <span class="tab-dot"></span>
       </button>
-      <button class="tab" data-tab="360" onclick="switchTab('360')">
-        <span class="tab-icon">🔄</span>
-        360°
-        <span class="tab-badge">SOON</span>
+      <button class="tab" data-id="360" onclick="activate('360')">
+        <span class="tab-icon">🔄</span> 360° <span class="tab-badge">SOON</span>
       </button>
-    </div>
-
+    </nav>
   </header>
 
-  <!-- Frames -->
-  <div class="frames">
+  <div class="frame-wrap" id="frameWrap">
 
-    <!-- Images -->
+    <!-- Images — load immediately -->
     <iframe
-      class="frame active"
-      id="frame-images"
+      id="f-images"
       src="https://vin-tracker-delivery.vercel.app/"
       title="Images QC Dashboard"
-      allow="clipboard-write"
+      allow="clipboard-write; clipboard-read"
     ></iframe>
 
-    <!-- Videos -->
+    <!-- Videos — hidden until activated, src set by JS to avoid X-Frame-Options block -->
     <iframe
-      class="frame"
-      id="frame-videos"
+      id="f-videos"
       src="about:blank"
-      data-src="https://video-tracker-delivery.vercel.app/"
       title="Videos QC Dashboard"
-      allow="clipboard-write"
+      allow="clipboard-write; clipboard-read"
+      style="display:none;"
     ></iframe>
 
-    <!-- 360 — coming soon -->
-    <div class="frame" id="frame-360">
-      <div class="coming-soon">
-        <div class="cs-icon">🔄</div>
-        <div class="cs-title">360° Dashboard</div>
-        <div class="cs-sub">IN PROGRESS</div>
-        <div class="cs-badge">🚧 Coming soon — check back later</div>
-      </div>
+    <!-- 360 placeholder -->
+    <div id="f-360" class="soon" style="display:none;">
+      <div class="soon-icon">🔄</div>
+      <div class="soon-title">360° Dashboard</div>
+      <div class="soon-sub">IN PROGRESS</div>
+      <div class="soon-badge">🚧 Coming soon</div>
     </div>
 
   </div>
 </div>
 
 <script>
-// ── TAB SWITCHING ────────────────────────────────────────────────
-// Lazy-load iframes: only set src when first activated, so unused
-// dashboards don't consume bandwidth on load.
-function switchTab(id) {
-  // Update tab buttons
-  document.querySelectorAll('.tab').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === id);
+const URLS = {
+  images: 'https://vin-tracker-delivery.vercel.app/',
+  videos: 'https://video-tracker-delivery.vercel.app/',
+};
+
+// Track which iframes have been loaded (to avoid reloading on re-visit)
+const loaded = { images: true, videos: false, '360': false };
+
+function activate(id) {
+  // Update tab styles
+  document.querySelectorAll('.tab').forEach(b =>
+    b.classList.toggle('active', b.dataset.id === id)
+  );
+
+  // Show/hide frames
+  ['images','videos','360'].forEach(key => {
+    const el = document.getElementById('f-' + key);
+    if (!el) return;
+    el.style.display = key === id ? (key === '360' ? 'flex' : 'block') : 'none';
   });
 
-  // Show correct frame
-  document.querySelectorAll('.frame').forEach(f => {
-    f.classList.toggle('active', f.id === 'frame-' + id);
-  });
-
-  // Lazy-load iframe src on first visit
-  const frame = document.getElementById('frame-' + id);
-  if (frame && frame.tagName === 'IFRAME' && !frame.src && frame.dataset.src) {
-    frame.src = frame.dataset.src;
+  // Lazy-load iframe: set src the first time it becomes active
+  const frame = document.getElementById('f-' + id);
+  if (frame && frame.tagName === 'IFRAME' && !loaded[id] && URLS[id]) {
+    frame.src = URLS[id];
+    loaded[id] = true;
   }
 
-  // Persist active tab
-  try { localStorage.setItem('hub-tab', id); } catch(e) {}
+  // Persist
+  try { localStorage.setItem('qc-hub-tab', id); } catch(e) {}
 }
 
-// ── RESTORE LAST TAB ─────────────────────────────────────────────
-const lastTab = localStorage.getItem('hub-tab');
-if (lastTab && lastTab !== 'images') {
-  switchTab(lastTab);
-}
+// Restore last active tab on load
+try {
+  const last = localStorage.getItem('qc-hub-tab');
+  if (last && last !== 'images') activate(last);
+} catch(e) {}
 </script>
 </body>
 </html>
