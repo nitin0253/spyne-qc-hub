@@ -96,7 +96,7 @@ iframe{
         <span class="tab-icon">🎬</span> Videos <span class="tab-dot"></span>
       </button>
       <button class="tab" data-id="360" onclick="activate('360')">
-        <span class="tab-icon">🔄</span> 360° <span class="tab-badge">SOON</span>
+        <span class="tab-icon">🔄</span> 360° <span class="tab-dot"></span>
       </button>
     </nav>
   </header>
@@ -120,13 +120,14 @@ iframe{
       style="display:none;"
     ></iframe>
 
-    <!-- 360 placeholder -->
-    <div id="f-360" class="soon" style="display:none;">
-      <div class="soon-icon">🔄</div>
-      <div class="soon-title">360° Dashboard</div>
-      <div class="soon-sub">IN PROGRESS</div>
-      <div class="soon-badge">🚧 Coming soon</div>
-    </div>
+    <!-- 360 — hidden until activated, src set by JS -->
+    <iframe
+      id="f-360"
+      src="about:blank"
+      title="360° QC Dashboard"
+      allow="clipboard-write; clipboard-read"
+      style="display:none;"
+    ></iframe>
 
   </div>
 </div>
@@ -135,6 +136,7 @@ iframe{
 const URLS = {
   images: 'https://vin-tracker-delivery.vercel.app/',
   videos: 'https://video-tracker-delivery.vercel.app/',
+  '360':  'https://360-qc-pendency.vercel.app/',
 };
 
 // Track which iframes have been loaded (to avoid reloading on re-visit)
@@ -150,7 +152,7 @@ function activate(id) {
   ['images','videos','360'].forEach(key => {
     const el = document.getElementById('f-' + key);
     if (!el) return;
-    el.style.display = key === id ? (key === '360' ? 'flex' : 'block') : 'none';
+    el.style.display = key === id ? 'block' : 'none';
   });
 
   // Lazy-load iframe: set src the first time it becomes active
